@@ -19,7 +19,7 @@ $nextId = 2;
 
 // CREATE
 Route::post('/products', function () use(&$products) {
-    $validated = request->validate([
+    $validated = request()->validate([
     'product_name'   => 'required|string',
     'selling_price'  => 'required|numeric',
     'cost_price'     => 'required|numeric',
@@ -45,19 +45,19 @@ Route::post('/products', function () use(&$products) {
 });
 
 // READ ALL
-Route::get('/products', function () use (&$products) {
+Route::get('/products', function () use ($products) {
     return response()->json ($products, 200);
 });
 
 // READ ONE
-Route::get('/products/{product_id}', function ($product_id) use (&$products){
+Route::get('/products/{product_id}', function ($product_id) use ($products){
     $product = collect($products)->firstWhere('product_id', $product_id);
 
     if(!$product){
         return response()->json(['message' => 'Product not found.'], 404);
     }
 
-    return response()->json($products, 200);
+    return response()->json($product, 200);
 });
 
 // UPDATE
